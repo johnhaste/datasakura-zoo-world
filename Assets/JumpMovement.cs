@@ -8,11 +8,17 @@ public class JumpMovement : MonoBehaviour
 
     [Header("Control Settings")]
     private bool alive = true;
-    public float jumpInterval = 2f; // Seconds between each jump
+    public float jumpIntervalMin = 2f; // Seconds between each jump
+    public float jumpIntervalMax = 4f; // Seconds between each jump
     public float jumpForceMin = 5f; // Minimum jump force
     public float jumpForceMax = 10f; // Maximum jump force
     public MovementDirection movementDirection = MovementDirection.HorizontalAndVertical;
     public float rotationSpeed = 2f; // Speed of rotation
+
+    [Header("Off bounds control")]
+    private Vector3 centerStage = Vector3.zero; // Center of the stage
+    private bool aimTowardsCenterNextJump = false; // Whether to aim towards the center on the next jump
+
 
     void Start()
     {
@@ -25,7 +31,7 @@ public class JumpMovement : MonoBehaviour
     {
         while (alive)
         {
-            yield return new WaitForSeconds(jumpInterval); 
+            yield return new WaitForSeconds(Random.Range(jumpIntervalMin, jumpIntervalMax)); 
             Jump();
         }
     }
@@ -33,21 +39,18 @@ public class JumpMovement : MonoBehaviour
     //Jump according to parameters
     private void Jump()
     {
-        //Deciddes which direction to jump
-        Vector3 jumpDirection = CalculateJumpDirection();
+        Vector3 jumpDirection = aimTowardsCenterNextJump ? (centerStage - transform.position).normalized : CalculateJumpDirection();
 
-        //Determines the force of the jump
+        // Reset aim towards center flag after it's used
+        aimTowardsCenterNextJump = false;
+
         float jumpForce = Random.Range(jumpForceMin, jumpForceMax);
 
-        //Rotates the object towards the jump direction
         StartCoroutine(SmoothRotateTowards(jumpDirection));
-        
-        //Takes the player off the ground
         jumpDirection += Vector3.up;
-
-        //Applies the jump force
         rb.AddForce(jumpDirection.normalized * jumpForce, ForceMode.Impulse);
     }
+
 
     private Vector3 CalculateJumpDirection()
     {
@@ -83,11 +86,26 @@ public class JumpMovement : MonoBehaviour
 
     IEnumerator SmoothRotateTowards(Vector3 direction)
     {
-        Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+        // Calculate the horizontal direction vector by ignoring the y component
+        Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z).normalized;
+        // Calculate target rotation based on the horizontal direction only
+        Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
+
         while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             yield return null;
+        }
+    }
+
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        Debug.Log("OnTriggerEnter:" + collider.gameObject.tag);
+
+        if (collider.gameObject.CompareTag("StageBounds"))
+        {
+            aimTowardsCenterNextJump = true;
         }
     }
 
