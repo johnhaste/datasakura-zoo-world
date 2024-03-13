@@ -10,8 +10,7 @@ public class JumpMovement : MonoBehaviour
     private bool alive = true;
     public float jumpIntervalMin = 2f; // Seconds between each jump
     public float jumpIntervalMax = 4f; // Seconds between each jump
-    public float jumpForceMin = 5f; // Minimum jump force
-    public float jumpForceMax = 10f; // Maximum jump force
+    public float jumpForce = 5f; // Minimum jump force
     public MovementDirection movementDirection = MovementDirection.HorizontalAndVertical;
     public float rotationSpeed = 2f; // Speed of rotation
 
@@ -43,8 +42,6 @@ public class JumpMovement : MonoBehaviour
 
         // Reset aim towards center flag after it's used
         aimTowardsCenterNextJump = false;
-
-        float jumpForce = Random.Range(jumpForceMin, jumpForceMax);
 
         StartCoroutine(SmoothRotateTowards(jumpDirection));
         jumpDirection += Vector3.up;
