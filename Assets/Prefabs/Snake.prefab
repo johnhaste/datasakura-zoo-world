@@ -120,6 +120,8 @@ GameObject:
   - component: {fileID: 6117821730685963975}
   - component: {fileID: 1126433732413928963}
   - component: {fileID: 1295905601770019401}
+  - component: {fileID: 2251147886555697900}
+  - component: {fileID: 8894483896166582411}
   m_Layer: 0
   m_Name: Snake
   m_TagString: Untagged
@@ -243,3 +245,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &2251147886555697900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3583631664556061696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae607259116d96488e93f961f3dd82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animalType: 1
+--- !u!114 &8894483896166582411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3583631664556061696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28e6e1bcd4e02b4492fe6f1d64a8830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  movementDirection: 5
+  directionChangeInterval: 3

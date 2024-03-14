@@ -7,7 +7,7 @@ public class LinearMovement : MonoBehaviour
     private Vector3 currentDirection;
     public float directionChangeInterval = 5f; // Interval to randomly change direction unless moving to center
     private float directionChangeTimer;
-    public bool movingToCenter = false;
+    private bool movingToCenter = false;
     private Vector3 centerPosition = Vector3.zero; // Assuming center is (0,0,0)
 
     void Start()

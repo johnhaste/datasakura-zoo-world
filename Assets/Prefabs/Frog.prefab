@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 4728933402451883313}
   - component: {fileID: 6065635393202915013}
   - component: {fileID: 98538187511957714}
+  - component: {fileID: 2312879516351036322}
   m_Layer: 0
   m_Name: Frog
   m_TagString: Untagged
@@ -172,7 +173,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 04b9450463f0f8a4baff3ee86056a942, type: 2}
+  - {fileID: 2100000, guid: 9b159fe0de2b8c241b6e450e6421fcbe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -256,8 +257,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fdc11bd7fbd7bc43b6b7851637661c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpInterval: 2
-  jumpForceMin: 3
-  jumpForceMax: 6
+  jumpIntervalMin: 2
+  jumpIntervalMax: 4
+  jumpForce: 5
   movementDirection: 5
   rotationSpeed: 5
+--- !u!114 &2312879516351036322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8358764063349876974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae607259116d96488e93f961f3dd82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animalType: 0
