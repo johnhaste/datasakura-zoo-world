@@ -26,6 +26,7 @@ public class Animal : MonoBehaviour
             {
                 Debug.Log("Predator " + spawnIndex +" caught prey " + collidedAnimal.spawnIndex);
                 GameManager.Instance.AddDeadAnimalCounter(collidedAnimal);
+                UIManager.Instance.ShowTastyText(collidedAnimal.transform.position);
                 Destroy(collision.gameObject);
             }
             else if(animalType == AnimalType.PREDATOR && collidedAnimal.animalType == AnimalType.PREDATOR)
@@ -34,12 +35,14 @@ public class Animal : MonoBehaviour
                 {
                     Debug.Log("Predator " + spawnIndex + " caught by predator " + collidedAnimal.spawnIndex);
                     GameManager.Instance.AddDeadAnimalCounter(collidedAnimal);
+                    UIManager.Instance.ShowTastyText(collidedAnimal.transform.position);
                     Destroy(collision.gameObject);                    
                 }
                 else
                 {
                     Debug.Log("Predator " + collidedAnimal.spawnIndex + " caught by predator " + spawnIndex);
                     GameManager.Instance.AddDeadAnimalCounter(this);
+                    UIManager.Instance.ShowTastyText(transform.position);
                     Destroy(gameObject);
                 }
             }
