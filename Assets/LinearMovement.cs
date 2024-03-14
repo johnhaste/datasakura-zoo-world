@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class LinearMovement : MonoBehaviour
 {
+    [Header("References")]
+    private Rigidbody rb;
+
     public float speed = 5f;
     public MovementDirection movementDirection = MovementDirection.FreeMovement;
     private Vector3 currentDirection;
@@ -14,26 +17,32 @@ public class LinearMovement : MonoBehaviour
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         ChooseNewDirection();
         StartCoroutine(DirectionChangeRoutine());
     }
 
-    void Update()
+    void FixedUpdate() // Move physics updates to FixedUpdate
     {
-        Move();
+        Move(); // We'll adjust the Move method to use Rigidbody velocity
         RotateTowardsDirection();
     }
 
     private void Move()
     {
-        transform.position += currentDirection * speed * Time.deltaTime;
+        // Update the Rigidbody's velocity instead of transform position
+        rb.velocity = currentDirection * speed;
     }
 
     public void RotateTowardsDirection()
     {
-        Vector3 horizontalDirection = new Vector3(currentDirection.x, 0, currentDirection.z).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
-        transform.rotation = targetRotation;
+        if (currentDirection != Vector3.zero) // Check to prevent "Look rotation viewing vector is zero" error
+        {
+            Vector3 horizontalDirection = new Vector3(currentDirection.x, 0, currentDirection.z).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
+            // Smoothly rotate towards the target direction
+            rb.rotation = Quaternion.Lerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+        }
     }
 
     IEnumerator DirectionChangeRoutine()
@@ -42,7 +51,6 @@ public class LinearMovement : MonoBehaviour
         {
             yield return new WaitForSeconds(directionChangeInterval);
 
-            //Debug.Log("DirectionChangeRoutine");
             if (!isMovingToCenter)
             {
                 ChooseNewDirection();
@@ -61,7 +69,6 @@ public class LinearMovement : MonoBehaviour
         {
             isMovingToCenter = false;
             StartCoroutine(WaitAndChooseNewDirection(1));
-            
         }
     }
 
@@ -73,7 +80,6 @@ public class LinearMovement : MonoBehaviour
 
     private void ChooseNewDirection()
     {
-        //Debug.Log("ChooseNewDirection");
         currentDirection = CalculateDirection().normalized;
         currentDirection.y = 0; // Ensure there's no vertical movement
     }
@@ -85,18 +91,30 @@ public class LinearMovement : MonoBehaviour
         {
             case MovementDirection.OnlyHorizontal:
                 x = Random.Range(-1f, 1f);
+                z = 0;
                 break;
             case MovementDirection.OnlyVertical:
+                x = 0;
                 z = Random.Range(-1f, 1f);
                 break;
             case MovementDirection.OnlyDiagonals:
                 x = Random.Range(-1f, 1f);
-                z = x * (Random.value < 0.5 ? 1 : -1);
+                z = Random.value < 0.5 ? x : -x; // Ensuring diagonal movement
                 break;
             case MovementDirection.HorizontalAndVertical:
-                if (Random.value < 0.5f) x = Random.Range(-1f, 1f); else z = Random.Range(-1f, 1f);
+                if (Random.value < 0.5f)
+                {
+                    x = Random.Range(-1f, 1f);
+                    z = 0;
+                }
+                else
+                {
+                    x = 0;
+                    z = Random.Range(-1f, 1f);
+                }
                 break;
             case MovementDirection.HorizontalVerticalAndDiagonals:
+                // This allows for any direction, but it's not purely random across all vectors like FreeMovement
                 x = Random.Range(-1f, 1f);
                 z = Random.Range(-1f, 1f);
                 break;
@@ -107,4 +125,5 @@ public class LinearMovement : MonoBehaviour
         }
         return new Vector3(x, 0, z);
     }
+
 }
