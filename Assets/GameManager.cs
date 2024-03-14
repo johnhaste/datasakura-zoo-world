@@ -5,8 +5,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    [Header("Counters")]
     public int deadPreys;
     public int deadPredators;
+
+    [Header("Groups")]
+    public GameObject PreysGroup;
+    public GameObject PredatorsGroup;
 
     private void Awake()
     {

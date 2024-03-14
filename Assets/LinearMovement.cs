@@ -10,7 +10,6 @@ public class LinearMovement : MonoBehaviour
     public float rotationSpeed = 2f; // Adjust this for a smoother rotation
 
     public Vector3 centerPosition = Vector3.zero; // Assuming center is (0,0,0)
-    public bool isRotating = false;
     public bool isMovingToCenter = false;
 
     void Start()
@@ -22,36 +21,19 @@ public class LinearMovement : MonoBehaviour
     void Update()
     {
         Move();
+        RotateTowardsDirection();
     }
 
     private void Move()
     {
         transform.position += currentDirection * speed * Time.deltaTime;
-
-        Vector3 horizontalDirection = new Vector3(currentDirection.x, 0, currentDirection.z).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
-
-        if(transform.rotation != targetRotation && !isRotating)
-        {
-            isRotating = true;
-            StartCoroutine(SmoothRotateTowards(horizontalDirection));
-        }
-        else
-        {
-            isRotating = false;
-        }
     }
 
-    IEnumerator SmoothRotateTowards(Vector3 direction)
+    public void RotateTowardsDirection()
     {
-        Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z).normalized;
+        Vector3 horizontalDirection = new Vector3(currentDirection.x, 0, currentDirection.z).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
-
-        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            yield return null;
-        }
+        transform.rotation = targetRotation;
     }
 
     IEnumerator DirectionChangeRoutine()

@@ -10,7 +10,18 @@ public class Animal : MonoBehaviour
 
     public void Start()
     {
+        //Index for future comparisons
         spawnIndex = ObjectSpawner.Instance.spawnedObjects;
+        
+        //Grouping by animal type
+        if(animalType == AnimalType.PREY)
+        {
+            transform.SetParent(GameManager.Instance.PreysGroup.transform);
+        }
+        else
+        {
+            transform.SetParent(GameManager.Instance.PredatorsGroup.transform);
+        }
     }
 
     public void OnCollisionEnter(Collision collision)

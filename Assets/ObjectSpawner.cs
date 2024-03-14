@@ -9,8 +9,9 @@ public class ObjectSpawner : MonoBehaviour
 
     [Header("Settings")]
     public bool isActive = true;
-    public int minWait = 1;
-    public int maxWait = 3;
+    public float minWait = 1f;
+    public float maxWait = 3f;
+    public int offSet = 3;
 
     [Header("Prefabs")]
     public List<GameObject> Prefabs = new List<GameObject>();
@@ -52,10 +53,10 @@ public class ObjectSpawner : MonoBehaviour
             int randomIndex = Random.Range(0, Prefabs.Count);
 
             //Boundaries
-            int StageBoundsLeftX = (int)StageBoundsLeft.transform.position.x + 1;
-            int StageBoundsRightX = (int)StageBoundsRight.transform.position.x - 1;
-            int StageBoundsTopZ = (int)StageBoundsTop.transform.position.z - 1;
-            int StageBoundsBottomZ = (int)StageBoundsBottom.transform.position.z + 1;
+            int StageBoundsLeftX = (int)StageBoundsLeft.transform.position.x + offSet;
+            int StageBoundsRightX = (int)StageBoundsRight.transform.position.x - offSet;
+            int StageBoundsTopZ = (int)StageBoundsTop.transform.position.z - offSet;
+            int StageBoundsBottomZ = (int)StageBoundsBottom.transform.position.z + offSet;
 
             //Generate random spawn position
             Vector3 spawnPosition = new Vector3(Random.Range(StageBoundsLeftX, StageBoundsRightX), 0, Random.Range(StageBoundsBottomZ, StageBoundsTopZ));

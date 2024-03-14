@@ -243,7 +243,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!114 &2251147886555697900
 MonoBehaviour:
@@ -259,6 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animalType: 1
   animalName: Snake
+  spawnIndex: 0
 --- !u!114 &8894483896166582411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,3 +275,6 @@ MonoBehaviour:
   speed: 3
   movementDirection: 5
   directionChangeInterval: 3
+  rotationSpeed: 2
+  centerPosition: {x: 0, y: 0, z: 0}
+  isMovingToCenter: 0
