@@ -20,7 +20,16 @@ public class JumpMovement : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        // If not, add a Rigidbody component to it
+        if (GetComponent<Rigidbody>() == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.useGravity = true;
+        }
+        else
+        {
+            rb = GetComponent<Rigidbody>();
+        }
         StartCoroutine(JumpRoutine());
     }
 

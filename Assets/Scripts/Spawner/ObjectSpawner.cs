@@ -76,8 +76,23 @@ public class ObjectSpawner : MonoBehaviour
 
             SpawnAreaChecker.gameObject.SetActive(false);
 
+
+            //TODO: check if must instantiate or activate
+
             //Spawning the Object
             Instantiate(Prefabs[randomIndex], spawnPosition, Quaternion.identity);
+
+            if(Prefabs[randomIndex].GetComponent<Animal>() != null)
+            {
+                if(Prefabs[randomIndex].GetComponent<Animal>().animalType == AnimalType.PREY)
+                {
+                    GameManager.Instance.spawnedPreys++;
+                }
+                else
+                {
+                    GameManager.Instance.spawnedPredators++;
+                }
+            }
 
             //Counting the spawned objects
             spawnedObjects++;

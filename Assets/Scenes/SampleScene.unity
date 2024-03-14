@@ -327,6 +327,10 @@ MonoBehaviour:
   deadPredators: 0
   PreysGroup: {fileID: 1946066793}
   PredatorsGroup: {fileID: 1320184458}
+  spawnedPreys: 0
+  activePreys: 0
+  spawnedPredators: 0
+  activePredators: 0
 --- !u!1 &335750775
 GameObject:
   m_ObjectHideFlags: 0

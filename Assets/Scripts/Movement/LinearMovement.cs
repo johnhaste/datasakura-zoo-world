@@ -6,18 +6,31 @@ public class LinearMovement : MonoBehaviour
     [Header("References")]
     private Rigidbody rb;
 
+    [Header("Settings")]
     public float speed = 5f;
-    public MovementDirection movementDirection = MovementDirection.FreeMovement;
-    private Vector3 currentDirection;
     public float directionChangeInterval = 5f; // Interval to randomly change direction
     public float rotationSpeed = 2f; // Adjust this for a smoother rotation
 
-    public Vector3 centerPosition = Vector3.zero; // Assuming center is (0,0,0)
+    [Header("Direction")]
+    public MovementDirection movementDirection = MovementDirection.FreeMovement;
+
+    [Header("Current Movement")]
+    private Vector3 currentDirection;
     public bool isMovingToCenter = false;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        // If not, add a Rigidbody component to it
+        if (GetComponent<Rigidbody>() == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.useGravity = true; 
+        }
+        else
+        {
+            rb = GetComponent<Rigidbody>();
+        }
+        
         ChooseNewDirection();
         StartCoroutine(DirectionChangeRoutine());
     }
@@ -63,7 +76,7 @@ public class LinearMovement : MonoBehaviour
         if (other.gameObject.CompareTag("StageBounds"))
         {
             isMovingToCenter = true;
-            currentDirection = (centerPosition - transform.position).normalized;
+            currentDirection = (Vector3.zero - transform.position).normalized;
         }
         else if (other.gameObject.CompareTag("PlayableArea"))
         {
