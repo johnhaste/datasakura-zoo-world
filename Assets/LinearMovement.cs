@@ -42,7 +42,7 @@ public class LinearMovement : MonoBehaviour
         {
             yield return new WaitForSeconds(directionChangeInterval);
 
-            Debug.Log("DirectionChangeRoutine");
+            //Debug.Log("DirectionChangeRoutine");
             if (!isMovingToCenter)
             {
                 ChooseNewDirection();
@@ -73,7 +73,7 @@ public class LinearMovement : MonoBehaviour
 
     private void ChooseNewDirection()
     {
-        Debug.Log("ChooseNewDirection");
+        //Debug.Log("ChooseNewDirection");
         currentDirection = CalculateDirection().normalized;
         currentDirection.y = 0; // Ensure there's no vertical movement
     }

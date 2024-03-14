@@ -98,7 +98,7 @@ public class JumpMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("OnTriggerEnter:" + collider.gameObject.tag);
+        //Debug.Log("OnTriggerEnter:" + collider.gameObject.tag);
 
         if (collider.gameObject.CompareTag("StageBounds"))
         {

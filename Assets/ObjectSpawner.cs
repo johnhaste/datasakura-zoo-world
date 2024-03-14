@@ -11,11 +11,12 @@ public class ObjectSpawner : MonoBehaviour
     public bool isActive = true;
     public float minWait = 1f;
     public float maxWait = 3f;
-    public int offSet = 3;
+    private int spawnOffSet = 3;
 
     [Header("Prefabs")]
     public List<GameObject> Prefabs = new List<GameObject>();
-    
+    public GameObject SpawnAreaChecker;
+
     [Header("Counters")]
     public int spawnedObjects = 0;
 
@@ -53,13 +54,27 @@ public class ObjectSpawner : MonoBehaviour
             int randomIndex = Random.Range(0, Prefabs.Count);
 
             //Boundaries
-            int StageBoundsLeftX = (int)StageBoundsLeft.transform.position.x + offSet;
-            int StageBoundsRightX = (int)StageBoundsRight.transform.position.x - offSet;
-            int StageBoundsTopZ = (int)StageBoundsTop.transform.position.z - offSet;
-            int StageBoundsBottomZ = (int)StageBoundsBottom.transform.position.z + offSet;
+            int StageBoundsLeftX = (int)StageBoundsLeft.transform.position.x + spawnOffSet;
+            int StageBoundsRightX = (int)StageBoundsRight.transform.position.x - spawnOffSet;
+            int StageBoundsTopZ = (int)StageBoundsTop.transform.position.z - spawnOffSet;
+            int StageBoundsBottomZ = (int)StageBoundsBottom.transform.position.z + spawnOffSet;
 
-            //Generate random spawn position
-            Vector3 spawnPosition = new Vector3(Random.Range(StageBoundsLeftX, StageBoundsRightX), 0, Random.Range(StageBoundsBottomZ, StageBoundsTopZ));
+            SpawnAreaChecker.gameObject.SetActive(true);
+
+            //Calculates random spawn position
+            Vector3 spawnPosition = new Vector3();
+
+            do
+            {
+                //Generate random spawn position
+                SpawnAreaChecker.GetComponent<SpawnAreaChecker>().IsTouchingAnimal = false;
+                spawnPosition = new Vector3(Random.Range(StageBoundsLeftX, StageBoundsRightX), 0, Random.Range(StageBoundsBottomZ, StageBoundsTopZ));
+                SpawnAreaChecker.transform.position = spawnPosition;
+                yield return new WaitForSeconds(0.1f);
+            } 
+            while (SpawnAreaChecker.GetComponent<SpawnAreaChecker>().IsTouchingAnimal);
+
+            SpawnAreaChecker.gameObject.SetActive(false);
 
             //Spawning the Object
             Instantiate(Prefabs[randomIndex], spawnPosition, Quaternion.identity);

@@ -26,16 +26,16 @@ public class Animal : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("OnCollisionEnter: " + collision.gameObject.name);
+        //Debug.Log("OnCollisionEnter: " + collision.gameObject.name);
 
         if (collision.gameObject.GetComponent<Animal>() != null)
         {
             Animal collidedAnimal = collision.gameObject.GetComponent<Animal>();
-            Debug.Log("OnTriggerEnter: Animal:" + collidedAnimal.animalName + "->" + collidedAnimal.animalType);
+            //Debug.Log("OnTriggerEnter: Animal:" + collidedAnimal.animalName + "->" + collidedAnimal.animalType);
 
             if(animalType == AnimalType.PREDATOR && collidedAnimal.animalType == AnimalType.PREY)
             {
-                Debug.Log("Predator " + spawnIndex +" caught prey " + collidedAnimal.spawnIndex);
+                //Debug.Log("Predator " + spawnIndex +" caught prey " + collidedAnimal.spawnIndex);
                 GameManager.Instance.AddDeadAnimalCounter(collidedAnimal);
                 UIManager.Instance.ShowTastyText(collidedAnimal.transform.position);
                 Destroy(collision.gameObject);
@@ -44,14 +44,14 @@ public class Animal : MonoBehaviour
             {
                 if(spawnIndex > collidedAnimal.spawnIndex)
                 {
-                    Debug.Log("Predator " + spawnIndex + " caught by predator " + collidedAnimal.spawnIndex);
+                    //Debug.Log("Predator " + spawnIndex + " caught by predator " + collidedAnimal.spawnIndex);
                     GameManager.Instance.AddDeadAnimalCounter(collidedAnimal);
                     UIManager.Instance.ShowTastyText(collidedAnimal.transform.position);
                     Destroy(collision.gameObject);                    
                 }
                 else
                 {
-                    Debug.Log("Predator " + collidedAnimal.spawnIndex + " caught by predator " + spawnIndex);
+                    //Debug.Log("Predator " + collidedAnimal.spawnIndex + " caught by predator " + spawnIndex);
                     GameManager.Instance.AddDeadAnimalCounter(this);
                     UIManager.Instance.ShowTastyText(transform.position);
                     Destroy(gameObject);
