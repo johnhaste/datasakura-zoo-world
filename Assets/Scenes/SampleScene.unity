@@ -1454,7 +1454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5edf8326360f28c4898309f0c5adef41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 1
+  isActive: 0
   minWait: 1
   maxWait: 3
   Prefabs:

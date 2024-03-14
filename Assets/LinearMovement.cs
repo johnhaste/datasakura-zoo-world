@@ -8,7 +8,10 @@ public class LinearMovement : MonoBehaviour
     private Vector3 currentDirection;
     public float directionChangeInterval = 5f; // Interval to randomly change direction
     public float rotationSpeed = 2f; // Adjust this for a smoother rotation
+
     public Vector3 centerPosition = Vector3.zero; // Assuming center is (0,0,0)
+    public bool isRotating = false;
+    public bool isMovingToCenter = false;
 
     void Start()
     {
@@ -25,9 +28,17 @@ public class LinearMovement : MonoBehaviour
     {
         transform.position += currentDirection * speed * Time.deltaTime;
 
-        if (currentDirection != Vector3.zero)
+        Vector3 horizontalDirection = new Vector3(currentDirection.x, 0, currentDirection.z).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
+
+        if(transform.rotation != targetRotation && !isRotating)
         {
-            StartCoroutine(SmoothRotateTowards(currentDirection));
+            isRotating = true;
+            StartCoroutine(SmoothRotateTowards(horizontalDirection));
+        }
+        else
+        {
+            isRotating = false;
         }
     }
 
@@ -48,7 +59,12 @@ public class LinearMovement : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(directionChangeInterval);
-            ChooseNewDirection();
+
+            Debug.Log("DirectionChangeRoutine");
+            if (!isMovingToCenter)
+            {
+                ChooseNewDirection();
+            }
         }
     }
 
@@ -56,17 +72,26 @@ public class LinearMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("StageBounds"))
         {
+            isMovingToCenter = true;
             currentDirection = (centerPosition - transform.position).normalized;
-            ChooseNewDirection();
         }
         else if (other.gameObject.CompareTag("PlayableArea"))
         {
-            ChooseNewDirection(); // Resume normal movement upon entering playable area
+            isMovingToCenter = false;
+            StartCoroutine(WaitAndChooseNewDirection(1));
+            
         }
+    }
+
+    IEnumerator WaitAndChooseNewDirection(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        ChooseNewDirection(); // Resume normal movement upon entering playable area
     }
 
     private void ChooseNewDirection()
     {
+        Debug.Log("ChooseNewDirection");
         currentDirection = CalculateDirection().normalized;
         currentDirection.y = 0; // Ensure there's no vertical movement
     }
