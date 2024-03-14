@@ -4,16 +4,37 @@ using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour
 {
+    //Singleton
+    public static ObjectSpawner Instance;
+
     [Header("Settings")]
-    public List<GameObject> Prefabs = new List<GameObject>();
+    public bool isActive = true;
     public int minWait = 1;
     public int maxWait = 3;
+
+    [Header("Prefabs")]
+    public List<GameObject> Prefabs = new List<GameObject>();
+    
+    [Header("Counters")]
+    public int spawnedObjects = 0;
 
     [Header("Boundaries")]
     public GameObject StageBoundsLeft;
     public GameObject StageBoundsRight;
     public GameObject StageBoundsTop;
     public GameObject StageBoundsBottom;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +44,11 @@ public class ObjectSpawner : MonoBehaviour
 
     IEnumerator SpawnPrefab()
     {
-        while (true)
+        while (isActive)
         {
             yield return new WaitForSeconds(Random.Range(minWait, maxWait));
+
+            //Random prefab
             int randomIndex = Random.Range(0, Prefabs.Count);
 
             //Boundaries
@@ -37,7 +60,11 @@ public class ObjectSpawner : MonoBehaviour
             //Generate random spawn position
             Vector3 spawnPosition = new Vector3(Random.Range(StageBoundsLeftX, StageBoundsRightX), 0, Random.Range(StageBoundsBottomZ, StageBoundsTopZ));
 
+            //Spawning the Object
             Instantiate(Prefabs[randomIndex], spawnPosition, Quaternion.identity);
+
+            //Counting the spawned objects
+            spawnedObjects++;
         }
     }
 }

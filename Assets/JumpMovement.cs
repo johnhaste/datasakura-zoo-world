@@ -14,10 +14,9 @@ public class JumpMovement : MonoBehaviour
     public MovementDirection movementDirection = MovementDirection.HorizontalAndVertical;
     public float rotationSpeed = 2f; // Speed of rotation
 
-    [Header("Off bounds control")]
+    [Header("Off Bounds Control")]
     private Vector3 centerStage = Vector3.zero; // Center of the stage
     private bool aimTowardsCenterNextJump = false; // Whether to aim towards the center on the next jump
-
 
     void Start()
     {
@@ -85,6 +84,7 @@ public class JumpMovement : MonoBehaviour
     {
         // Calculate the horizontal direction vector by ignoring the y component
         Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z).normalized;
+
         // Calculate target rotation based on the horizontal direction only
         Quaternion targetRotation = Quaternion.LookRotation(horizontalDirection);
 
