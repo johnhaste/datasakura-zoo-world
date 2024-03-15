@@ -2139,8 +2139,8 @@ MonoBehaviour:
   minWait: 1
   maxWait: 3
   Prefabs:
-  - {fileID: 3583631664556061696, guid: 33079c9da24f9c84ea12d20355f9cbd5, type: 3}
   - {fileID: 8358764063349876974, guid: e8c4ef9220e9b1e44bacf6d17badc08a, type: 3}
+  - {fileID: 3583631664556061696, guid: 33079c9da24f9c84ea12d20355f9cbd5, type: 3}
   SpawnAreaChecker: {fileID: 856817478}
   spawnedObjects: 0
   StageBoundsLeft: {fileID: 1822883168}

@@ -9,7 +9,7 @@ public class LinearMovement : MonoBehaviour
     [Header("Settings")]
     public float speed = 5f;
     public float directionChangeInterval = 5f; // Interval to randomly change direction
-    public float rotationSpeed = 2f; // Adjust this for a smoother rotation
+    public float rotationSpeed = 1f; // Adjust this for a smoother rotation
 
     [Header("Direction")]
     public MovementDirection movementDirection = MovementDirection.FreeMovement;

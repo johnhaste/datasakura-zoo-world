@@ -29,7 +29,11 @@ public class JumpMovement : MonoBehaviour
         else
         {
             rb = GetComponent<Rigidbody>();
-        }
+        }        
+    }
+
+    private void OnEnable()
+    {
         StartCoroutine(JumpRoutine());
     }
 
