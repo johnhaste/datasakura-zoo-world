@@ -76,23 +76,62 @@ public class ObjectSpawner : MonoBehaviour
 
             SpawnAreaChecker.gameObject.SetActive(false);
 
-
-            //TODO: check if must instantiate or activate
-
             //Spawning the Object
-            Instantiate(Prefabs[randomIndex], spawnPosition, Quaternion.identity);
+            GameObject spawnedObject = Prefabs[randomIndex];            
 
-            if(Prefabs[randomIndex].GetComponent<Animal>() != null)
+            if(spawnedObject.GetComponent<Animal>() != null)
             {
-                if(Prefabs[randomIndex].GetComponent<Animal>().animalType == AnimalType.PREY)
+
+                Debug.Log("SpawnPrefab: " + spawnedObject.GetComponent<Animal>().animalType);
+
+                if(spawnedObject.GetComponent<Animal>().animalType == AnimalType.PREY)
                 {
-                    GameManager.Instance.spawnedPreys++;
+                    Debug.Log("SpawnPrefab: activePreys:" + GameManager.Instance.activePreys + " spawnedPreys:" + GameManager.Instance.spawnedPreys);
+                    if (GameManager.Instance.activePreys < GameManager.Instance.spawnedPreys)
+                    {
+                        foreach (Transform prey in GameManager.Instance.PreysGroup.transform)
+                        {
+                            if (!prey.gameObject.activeSelf)
+                            {
+                                prey.gameObject.SetActive(true);
+                                prey.position = spawnPosition;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("SpawnPrefab: Instantiate prey");
+                        Instantiate(spawnedObject, spawnPosition, Quaternion.identity);
+                        GameManager.Instance.spawnedPreys++;
+                    }
                 }
                 else
                 {
-                    GameManager.Instance.spawnedPredators++;
+                    Debug.Log("SpawnPrefab: activePredators:" + GameManager.Instance.activePredators + " spawnedPredators:" + GameManager.Instance.spawnedPredators);
+                    if (GameManager.Instance.activePredators < GameManager.Instance.spawnedPredators)
+                    {
+                        foreach (Transform predator in GameManager.Instance.PredatorsGroup.transform)
+                        {
+                            if (!predator.gameObject.activeSelf)
+                            {
+                                predator.gameObject.SetActive(true);
+                                predator.position = spawnPosition;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("SpawnPrefab: Instantiate predator");
+                        Instantiate(spawnedObject, spawnPosition, Quaternion.identity);
+                        GameManager.Instance.spawnedPredators++;
+                    }
                 }
             }
+
+            //Updating the active objects counter
+            GameManager.Instance.UpdateActiveObjectsCounter();
 
             //Counting the spawned objects
             spawnedObjects++;
